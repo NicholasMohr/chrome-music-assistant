@@ -94,7 +94,7 @@ function renderStatus(statusText) {
   document.getElementById('status').textContent = statusText;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+chrome.commands.onCommand.addListener(function() {
   getAudibleTab(function(tab) {
     // Put the image URL in Google search.
     var hostname = new URL(tab.url).hostname
