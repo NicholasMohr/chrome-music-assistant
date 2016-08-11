@@ -21,7 +21,7 @@
   "permissions": [
     "activeTab",
     "tabs",
-    "system.storage",
+    "storage",
     "pageCapture",
     "http://*/",
     "https://*/"

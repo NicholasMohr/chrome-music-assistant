@@ -49,6 +49,54 @@ function getAudibleTab(callback) {
   // alert(url); // Shows "undefined", because chrome.tabs.query is async.
 }
 
+function renderStatus(statusText) {
+  document.getElementById('status').textContent = statusText;
+}
+
+function addToTable(time, favorite) {
+  var tbody = document.getElementById('tbody');
+
+  var tr = "<tr>";
+
+  /* Must not forget the $ sign */
+  tr += "<td>" + time + "</td>" + "<td>" + favorite.title + "<td>" + "<button class=deleteBtn id='" + time + "'>delete</button>"  + "</td>" + "</td></tr>";
+
+  /* We add the table row to the table body */
+  tbody.innerHTML += tr;
+}
+
+function clearTable() {
+  var tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+
+}
+
+
+function renderTable() {
+  chrome.storage.sync.get(function(data){
+    for (var time in data) {
+      addToTable(time, data[time]);
+    }
+    deleteButtons = document.getElementsByClassName("deleteBtn")
+    for (var i = deleteButtons.length - 1; i >= 0; i--) {
+      var btn = deleteButtons[i];
+      btn.addEventListener("click", function(evt){
+        chrome.storage.sync.remove(evt.currentTarget.id);
+        rerenderTable();
+      })
+    }
+  });
+}
+
+function rerenderTable() {
+  clearTable();
+  renderTable();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  renderTable();
+});
+
 chrome.commands.onCommand.addListener(function() {
   getAudibleTab(function(tab) {
     var hostname = new URL(tab.url).hostname;
@@ -70,5 +118,8 @@ chrome.commands.onCommand.addListener(function() {
           chrome.tabs.executeScript(tab.id, {file: "siteHandlers/default.js"});
       };
     });
+    newSongRecord = {}
+    newSongRecord[Date()] = tab
+    chrome.storage.sync.set(newSongRecord)
   });
 });
