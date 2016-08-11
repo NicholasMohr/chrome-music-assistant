@@ -22,6 +22,24 @@
     "activeTab",
     "tabs",
     "system.storage",
-    "pageCapture"
-  ]
+    "pageCapture",
+    "http://*/",
+    "https://*/"
+  ],
+  "background": {
+    "persistent": true,
+    "scripts": ["popup.js"]
+  }
+  // "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'"
+
+  // "background": {
+  //   "scripts": ["jquery-3.1.0.min.js"]
+  // },
+  // "content_scripts": [
+  //   {
+  //     "matches": ["http://*/", "https://*/"],
+  //     "js":["jquery-3.1.0.min.js"],
+  //     "run_at": "document_end"
+  //   }
+  // ]
 }
